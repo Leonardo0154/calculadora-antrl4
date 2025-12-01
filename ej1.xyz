@@ -1,0 +1,6 @@
+derivada(x**2, x)
+integral(sin(x), x)
+derivada(sin(cos(x)), x)
+integral(x**2, x, 0, 1)
+5 + 3
+2 * x + 5
