@@ -7,17 +7,42 @@ Integrantes:
 |------------|------------|
 | Alvaro Jair Abanto Davila    | U202313540    |
 | Daniel Jose Huapaya Vargas    | U202312230     | 
+| Leonardo Gamboa Huilcaya 		| u202322950	|
 # Problemática y motivación.
 
 ## Problemática
 
-Ejemplo: no existe un lenguaje específico y ampliamente estandarizado para expresar y manipular expresiones matemáticas simbólicas de forma declarativa y verificable. Aunque existen librerías y sistemas para manipulación simbólica (por ejemplo SymPy, Mathematica, Maple) y herramientas para cálculo numérico, no hay —en la práctica cotidiana— un lenguaje de dominio específico (DSL) pensado para: 1) describir de forma compacta y verificable expresiones y funciones simbólicas; 2) combinar especificaciones simbólicas de funciones (por ejemplo piezas a trozos, funciones elementales); y 3) operar algebraicamente sobre esas expresiones (simplificación, derivación, comprobación de continuidad o dominio).
+En el ámbito académico y profesional de matemáticas, ingeniería y ciencias, existe una necesidad constante de realizar cálculos de derivadas e integrales de manera precisa y eficiente. Aunque existen herramientas como SymPy, Mathematica y Maple, estas presentan varias limitaciones:
+
+Falta de estandarización: No existe un lenguaje específico y ampliamente aceptado para expresar operaciones de cálculo diferencial e integral de forma declarativa.
+
+Dependencia de entornos complejos: Las herramientas existentes requieren instalaciones complejas o licencias costosas.
+
+Falta de portabilidad: Muchas soluciones no pueden ejecutarse fácilmente en diferentes sistemas operativos.
+
+Curva de aprendizaje elevada: El uso de bibliotecas de programación requiere conocimientos técnicos avanzados.
 
 Por qué es importante
 
-- Reproducibilidad y legibilidad: un DSL permite expresar definiciones matemáticas de manera concisa, legible y versionable, lo que facilita compartir y revisar especificaciones.
-- Verificación y análisis simbólico: con una representación simbólica es posible demostrar propiedades (p. ej. continuidad, existencia de límites, integrabilidad) o transformar expresiones antes de evaluarlas numéricamente.
-- Integración con herramientas: un lenguaje bien definido facilita la generación automática de código para librerías numéricas, la exportación a formatos simbólicos y la integración con sistemas de computación algebraica.
+Accesibilidad educativa: Los estudiantes de cálculo necesitan una herramienta sencilla para verificar sus ejercicios.
+
+Reproducibilidad: Un DSL permite expresar definiciones matemáticas de manera concisa y versionable.
+
+Verificación automática: Posibilidad de validar resultados y detectar errores en cálculos manuales.
+
+Integración pedagógica: Herramienta que puede usarse en entornos educativos sin costos adicionales.
+
+NUESTRRA SOLUCION
+
+Desarrollamos un Lenguaje de Dominio Específico (DSL) para cálculo simbólico, implementado con:
+
+ANTLR4 para la gramática y parsing
+
+SymPy como motor matemático
+
+Docker para empaquetado y portabilidad
+
+Python como lenguaje de implementación
 
 ¿Existe y es un proceso largo?
 
@@ -31,7 +56,7 @@ Nuestro proyecto propone crear un lenguaje para expresiones matemáticas simból
 
 Objetivo general
 
-Desarrollar un lenguaje de dominio específico (DSL) para expresiones matemáticas simbólicas usando ANTLR4 para la gramática y Python como backend. El lenguaje deberá permitir representar y manipular simbólicamente funciones:
+Desarrollar una calculadora simbólica especializada en cálculo diferencial e integral, que pueda ejecutarse en cualquier entorno mediante contenedores Docker, proporcionando resultados exactos y simbólicos con una interfaz intuitiva.
 
 - Definidas y continuas (por ejemplo funciones a trozos con condiciones sobre el dominio).
 - Trigonométricas (sin, cos, tan y combinaciones) con simplificación y derivación simbólica.
@@ -39,10 +64,15 @@ Desarrollar un lenguaje de dominio específico (DSL) para expresiones matemátic
 
 Motivaciones concretas
 
-1. Claridad y expresividad: Los usuarios podrán escribir expresiones matemáticas complejas de forma legible y estándar, evitando ambigüedades que aparecen al codificar la misma lógica numéricamente.
-2. Automatización de análisis: Con un AST simbólico se pueden automatizar tareas como comprobar continuidad, encontrar derivadas simbólicas, o simplificar expresiones antes de evaluarlas numéricamente.
-3. Reutilización en aplicaciones científicas y de ingeniería: Al poder expresar funciones simbólicamente, se facilita su incorporación en pipelines de análisis, optimización y la generación de código para librerías numéricas.
-4. Aprendizaje y enseñanza: Un DSL sencillo sirve como herramienta pedagógica para explicar conceptos de cálculo simbólico y análisis matemático.
+Simplicidad de uso: Interfaz de línea de comandos intuitiva con modo interactivo.
+
+Portabilidad total: Ejecución en cualquier sistema con Docker instalado.
+
+Precisión simbólica: Resultados exactos, no aproximaciones numéricas.
+
+Validación automática: Detección de errores sintácticos y semánticos.
+
+Aplicación educativa: Herramienta de apoyo para estudiantes de cálculo.
 
 Ejemplos ilustrativos (cómo se expresarían y qué se espera)
 
@@ -96,9 +126,75 @@ Objetivos específicos
 - Integrar (opcionalmente) una biblioteca simbólica madura (por ejemplo SymPy) para delegar o validar transformaciones complejas y ahorrar tiempo de desarrollo.
 - Crear una suite de pruebas con ejemplos (integrales simbólicas e indefinidas, funciones trigonométricas, polinomios) que verifiquen corrección de parseo y de las operaciones simbólicas.
 
+ARQUITECTURA TÉCNICA
+Stack Tecnológico
+Componente				Tecnología			Versión	Propósito
+Parser/Lexer			ANTLR4				4.13.2	Análisis sintáctico
+Motor Matemático		SymPy				1.9	Cálculos simbólicos
+Lenguaje				Python				3.9+	Implementación
+Contenedor				Docker				20.10+	Portabilidad
+Generación de código	LLVM(Opcional)		Optimizaciones
 
 
+RESULTADOS Y PRUEBAS
+Ejemplos de Funcionamiento
+Expresión					Resultado					Comentario
+derivada(x**2, x)			2*x							Regla de la potencia
+integral(sin(x), x)			-cos(x) + C					Integral trigonométrica
+derivada(sin(cos(x)), x)	-sin(x)*cos(cos(x))			Regla de la cadena
+integral(x**2, x, 0, 1)		1/3							Integral definida
+derivada(exp(x)*log(x), x)	exp(x)*log(x) + exp(x)/x	Regla del producto
+5 + 3						8							Operación básica
+
+Manejo de Errores
+python
+>>> derivada(5x, x)  # Error común
+ERROR: Falta el operador * en multiplicación. Usa: 5*x en lugar de 5x
+
+>>> derivada(x**2 x)  # Falta coma
+ERROR: Faltan paréntesis, comas o argumentos
+
+Características Pedagógicas
+Constante de integración: Siempre incluye +C en integrales indefinidas
+
+Simplificación automática: Reduce expresiones complejas
+
+Formato legible: Resultados en notación matemática estándar
+
+Ayuda integrada: Comando ayuda con ejemplos y sintaxis
+
+ANÁLISIS DE RESULTADOS
+Logros Alcanzados
+DSL funcional completo: Gramática que cubre cálculo diferencial e integral
+Motor simbólico robusto: Integración con SymPy para cálculos precisos
+Interfaz de usuario intuitiva: Modos interactivo y por archivos
+Portabilidad total: Contenedor Docker funcional en múltiples plataformas
+Manejo de errores: Validación sintáctica y semántica
+Documentación completa: Código comentado y ejemplos de uso
+
+Limitaciones Identificadas
+ Funcionalidad limitada: Solo cálculo diferencial e integral básico
+ Sin optimizaciones avanzadas: No utiliza LLVM para generación de código nativo
+ Interfaz textual: Sin interfaz gráfica o web
+ Sin persistencia: No guarda historial de cálculos
 
 
+CONCLUSIONES
+Contribuciones Principales
+DSL especializado: Lenguaje específico para cálculo diferencial e integral
 
+Arquitectura modular: Separación clara entre parsing, procesamiento y salida
+
+Solución educativa: Herramienta accesible para estudiantes de cálculo
+
+Metodología reproducible: Proceso completo desde gramática hasta despliegue
+
+Aplicaciones Prácticas
+Educación: Verificación de ejercicios de cálculo
+
+Investigación: Prototipado rápido de expresiones matemáticas
+
+Ingeniería: Cálculos simbólicos en diseño técnico
+
+Docencia: Generación de material educativo
 
